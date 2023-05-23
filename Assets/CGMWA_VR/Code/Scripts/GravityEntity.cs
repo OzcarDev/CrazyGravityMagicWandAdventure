@@ -17,10 +17,12 @@ public class GravityEntity : MonoBehaviour
     private void Awake()
     {
         if (!_rb) _rb = GetComponent<Rigidbody>();
+        _rb.useGravity = false;
     }
 
     private void FixedUpdate()
     {
+        //Virtual Gravity
         _rb.AddForce(_rb.mass * GravityScale * _gravityDir);
     }
 
