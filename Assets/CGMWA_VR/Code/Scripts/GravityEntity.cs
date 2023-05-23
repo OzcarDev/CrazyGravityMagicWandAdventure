@@ -5,6 +5,7 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(Collider))]
 public class GravityEntity : MonoBehaviour
 {
     public const float GravityScale = 9.81f;
