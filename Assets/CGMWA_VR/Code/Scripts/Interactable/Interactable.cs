@@ -7,5 +7,5 @@ public abstract class Interactable : MonoBehaviour
 {
     [SerializeField] protected InteractionType _InteractiosAllowed;
 
-    protected abstract void Interact(InteractionContext ctx);
+    public abstract void Interact(InteractionContext ctx);
 }

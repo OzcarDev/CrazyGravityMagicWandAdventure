@@ -12,9 +12,21 @@ public class Interactor : MonoBehaviour
 
     [SerializeField] private LayerMask _interactLayer;
 
-    public void CheckInteraction()
+    public void CheckRaycastInteraction()
     {
+        if (!RayCast(out var hit)) return;
+
+        var interactable = hit.transform.GetComponent<Interactable>();
         
+        if(!interactable) return;
+        
+        interactable.Interact(new InteractionContext()
+        {
+            Actor = this,
+            started = true,
+            InteractionType = InteractionType.Select,
+            Transform = transform
+        });
     }
 
     private bool RayCast(out RaycastHit hit)
