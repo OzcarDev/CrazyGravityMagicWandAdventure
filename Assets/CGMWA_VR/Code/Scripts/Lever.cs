@@ -8,7 +8,6 @@ public class Lever : MonoBehaviour
 
     public UnityEvent OnTrigger;
     public UnityEvent OnUnTrigger;
-    // Start is called before the first frame update
 
     private void OnTriggerEnter(Collider other)
     {
@@ -16,7 +15,6 @@ public class Lever : MonoBehaviour
         {
             OnTrigger.Invoke();
         }
-
     }
 
     private void OnTriggerExit(Collider other)
