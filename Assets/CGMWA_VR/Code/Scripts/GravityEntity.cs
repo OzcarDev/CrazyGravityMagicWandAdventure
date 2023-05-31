@@ -10,6 +10,7 @@ public class GravityEntity : MonoBehaviour
 {
     public const float GravityScale = 9.81f;
 
+    public Rigidbody Rb => _rb;
     [SerializeField] private Rigidbody _rb;
     
     private Vector3 _gravityDir = Vector3.down;

@@ -12,15 +12,19 @@ public class Interactor : MonoBehaviour
 
     [SerializeField] private LayerMask _interactLayer;
 
+    [SerializeField] private TrailRenderer _trail;
+
     public void CheckRaycastInteraction()
     {
         if (!RayCast(out var hit)) return;
 
-        var interactable = hit.transform.GetComponent<Interactable>();
+        if (!hit.transform.TryGetComponent<Interactable>(out var interactable)) return;
         
         if(!interactable) return;
+
+        _currentInteractable = interactable;
         
-        interactable.Interact(new InteractionContext()
+        interactable.Interact(new CallInteractionContext()
         {
             Actor = this,
             started = true,
@@ -39,6 +43,17 @@ public class Interactor : MonoBehaviour
         //TODO: Code SphereCast 
         hit = default;
         return false;
+    }
+
+    private void Update()
+    {
+        _trail.Clear();
+        _trail.AddPosition(_interactorOriginRay.position);
+        if (Physics.Raycast(_interactorOriginRay.position, transform.up, out var hit, Mathf.Infinity))
+            _trail.AddPosition(hit.point);
+        else
+            _trail.AddPosition(_interactorOriginRay.up * 50);
+
     }
 
     private void OnDrawGizmos()

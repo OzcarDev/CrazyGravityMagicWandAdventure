@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UniRx;
 using UnityEngine;
 
@@ -22,17 +23,6 @@ public class GravityChanger : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        WallsInterectable.OnWallSelected
-            .Subscribe(OnWallSelected)
-            .AddTo(this);
-
-        CubeInteractable.OnCubeSelected
-            .Subscribe(OnCubeSelected)
-            .AddTo(this);
-    }
-
     private void OnCubeSelected(CubeInteractable cube)
     {
         _wall = null;
@@ -44,9 +34,32 @@ public class GravityChanger : MonoBehaviour
         if (_cube == null) return;
         _wall = wall;
 
-        var newDir = -_wall.transform.forward;
-        Debug.Log(newDir);
-        _cube.GravEntity.ChangeGravity(newDir);
-    
+        var newDir = -_wall.VirtualNormal;
+        ChangeGravity(newDir);
+    }
+
+    private void ChangeGravity(Vector3 gravityDir)
+    {
+        Debug.Log(gravityDir);
+        _cube.GravEntity.ChangeGravity(gravityDir);
+        RestartGravityChange();
+    }
+
+    private void RestartGravityChange()
+    {
+        _cube = null;
+        _wall = null;
+    }
+
+    private void OnEnable()
+    {
+        WallsInterectable.OnWallInteract += OnWallSelected;
+        CubeInteractable.OnCubeInteract += OnCubeSelected;
+    }
+
+    private void OnDisable()
+    {
+        WallsInterectable.OnWallInteract -= OnWallSelected;
+        CubeInteractable.OnCubeInteract -= OnCubeSelected;
     }
 }

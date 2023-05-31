@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +7,6 @@ using UnityEngine;
 public abstract class Interactable : MonoBehaviour
 {
     [SerializeField] protected InteractionType _InteractiosAllowed;
-
-    public abstract void Interact(InteractionContext ctx);
+    public abstract event Action<PerformedInteractionContext> OnInteract;
+    public abstract void Interact(CallInteractionContext ctx);
 }

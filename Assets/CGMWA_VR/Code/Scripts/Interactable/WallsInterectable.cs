@@ -4,13 +4,24 @@ using UnityEngine;
 
 public class WallsInterectable : Interactable
 {
-    private static Subject<WallsInterectable> _onWallSelected = new();
-    public static IObservable<WallsInterectable> OnWallSelected => _onWallSelected;
+    public Vector3 VirtualNormal = Vector3.zero;
+
+    public override event Action<PerformedInteractionContext> OnInteract;
+    public static event Action<WallsInterectable> OnWallInteract;
+
+    private ActiveInteraction _currentInteraction = ActiveInteraction.Off;
     
-    public override void Interact(InteractionContext ctx)
+    public override void Interact(CallInteractionContext ctx)
     {
         //if (!ctx.started) return;
         Debug.Log("Wall Interact");
-        _onWallSelected.OnNext(this);
+
+        OnInteract?.Invoke(new PerformedInteractionContext
+        {
+            Interactable = this,
+            ActiveInteraction = ActiveInteraction.Idle
+        });
+
+        OnWallInteract?.Invoke(this);
     }
 }
