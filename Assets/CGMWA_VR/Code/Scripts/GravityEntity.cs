@@ -10,6 +10,8 @@ public class GravityEntity : MonoBehaviour
 {
     public const float GravityScale = 9.81f;
 
+    public event Action<Vector3> OnGravityChange; 
+
     public Rigidbody Rb => _rb;
     [SerializeField] private Rigidbody _rb;
     
@@ -31,5 +33,6 @@ public class GravityEntity : MonoBehaviour
     public void ChangeGravity(Vector3 dir)
     {
         _gravityDir = dir;
+        OnGravityChange?.Invoke(dir);
     }
 }
