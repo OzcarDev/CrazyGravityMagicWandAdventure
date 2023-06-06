@@ -14,6 +14,7 @@ public class Interactor : MonoBehaviour
 
     [SerializeField] private TrailRenderer _trail;
 
+
     public void CheckRaycastInteraction()
     {
         if (!RayCast(out var hit)) return;
@@ -35,7 +36,7 @@ public class Interactor : MonoBehaviour
 
     private bool RayCast(out RaycastHit hit)
     {
-        return Physics.Raycast(_interactorOriginRay.position, transform.up, out hit, Mathf.Infinity);
+        return Physics.Raycast(_interactorOriginRay.position, transform.up, out hit, Mathf.Infinity, _interactLayer);
     }
 
     private bool SphereCast(out RaycastHit hit)

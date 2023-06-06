@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 public class BloqueMovible : MonoBehaviour
@@ -8,6 +9,8 @@ public class BloqueMovible : MonoBehaviour
 
     [SerializeField]
     private Transform _cube, _onPosition, _offPosition;
+
+    private Tween _moveTween = null;
 
     private void OnInteractInteractable(PerformedInteractionContext ctx)
     {
@@ -22,7 +25,10 @@ public class BloqueMovible : MonoBehaviour
 
     private void ChangePos(Transform newPos)
     {
-        _cube.position = newPos.position;
+        if(_moveTween.IsActive())
+            _moveTween.Kill();
+
+        _moveTween = _cube.DOMove(newPos.position, 0.75f);
     }
 
     private void OnEnable()

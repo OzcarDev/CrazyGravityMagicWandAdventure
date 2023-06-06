@@ -10,6 +10,8 @@ public class CubeInteractable : Interactable
 
     public GravityEntity GravEntity => _gravEntity;
     private GravityEntity _gravEntity;
+    
+    private Vector3 _lastDir = Vector3.down;
 
     private void Awake()
     {
@@ -19,7 +21,6 @@ public class CubeInteractable : Interactable
     public override void Interact(CallInteractionContext ctx)
     {
         if (_isMoving) return;
-        //if (!ctx.started) return;
 
         Debug.Log("Cube Interact");
 
@@ -32,8 +33,12 @@ public class CubeInteractable : Interactable
 
     private bool _isMoving = false;
 
-    private void OnGravityChange(Vector3 _)
+    private void OnGravityChange(Vector3 newDir)
     {
+        if (newDir == _lastDir) return;
+
+        _lastDir = newDir;
+        
         Debug.Log("Cambio de gravedad");
         _isMoving = true;
     }
