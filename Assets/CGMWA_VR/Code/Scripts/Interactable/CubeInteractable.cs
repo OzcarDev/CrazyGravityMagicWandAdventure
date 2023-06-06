@@ -11,9 +11,6 @@ public class CubeInteractable : Interactable
     public GravityEntity GravEntity => _gravEntity;
     private GravityEntity _gravEntity;
 
-
-    private bool _isMoving => _gravEntity.Rb.velocity != Vector3.zero;
-
     private void Awake()
     {
         _gravEntity = GetComponent<GravityEntity>();
@@ -21,7 +18,7 @@ public class CubeInteractable : Interactable
 
     public override void Interact(CallInteractionContext ctx)
     {
-        //if (_isMoving) return;
+        if (_isMoving) return;
         //if (!ctx.started) return;
 
         Debug.Log("Cube Interact");
@@ -31,5 +28,34 @@ public class CubeInteractable : Interactable
         });
 
         OnCubeInteract?.Invoke(this);
+    }
+
+    private bool _isMoving = false;
+
+    private void OnGravityChange(Vector3 _)
+    {
+        Debug.Log("Cambio de gravedad");
+        _isMoving = true;
+    }
+
+    private void OnEnable()
+    {
+        _gravEntity.OnGravityChange += OnGravityChange;
+    }
+
+    private void OnDisable()
+    {
+        _gravEntity.OnGravityChange -= OnGravityChange;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (!collision.collider.CompareTag("Wall")) return;
+
+        if (_isMoving)
+        {
+            _isMoving = false;
+            Debug.Log("Se puede mover");
+        }
     }
 }
