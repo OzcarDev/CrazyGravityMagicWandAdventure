@@ -47,12 +47,7 @@ public class Interactor : MonoBehaviour
 
     private void Update()
     {
-        _trail.Clear();
-        _trail.AddPosition(_interactorOriginRay.position);
-        if (Physics.Raycast(_interactorOriginRay.position, transform.up, out var hit, Mathf.Infinity))
-            _trail.AddPosition(hit.point);
-        else
-            _trail.AddPosition(_interactorOriginRay.up * 50);
+        
 
     }
 
